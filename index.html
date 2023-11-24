@@ -133,7 +133,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js"></script>
     <script> 
         // JavaScript code here
-
+        const max_bp = 100000, max_ap = 50000, max_dp = 50000;
         var ctx = document.getElementById('myChart').getContext('2d');
         var myChart;
 
@@ -151,31 +151,24 @@
             document.getElementById('dpm').innerHTML = 'DPM: ' + dpm;
             document.getElementById('bpm').innerHTML = 'BPM: ' + bpm;
 
-            updateChart(apm, dpm, health);
+            updateChart(apm, dpm, bpm, health);
         }
 
-        function updateChart(apm, dpm, health) {
-            var labels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+        function updateChart(apm, dpm, bpm, health) {
+            var labels = ["apm", "dpm", "bpm"];
             var datasets = [
                 {
-                    label: 'APM',
-                    data: Array(12).fill(apm),
+                    label: 'CURRENT',
+                    data: [apm, dpm, bpm],
                     fill: true,
                     backgroundColor: 'rgb(255, 0, 0, 0.3)',
                     borderWidth: 2
                 },
                 {
-                    label: 'DPM',
-                    data: Array(12).fill(dpm),
+                    label: 'LIMIT',
+                    data: [max_ap, max_dp, max_bp],
                     fill: true,
                     backgroundColor: 'rgba(0, 50, 250, 0.3)',
-                    borderWidth: 2
-                },
-                {
-                    label: 'BPM',
-                    data: Array(12).fill(bpm),
-                    fill: true,
-                    backgroundColor: 'rgba(0, 255, 0, 0.3)',
                     borderWidth: 2
                 },
             ];
@@ -183,13 +176,11 @@
             if (myChart) {
                 myChart.destroy();
             }
+            console.log(datasets, bpm)
 
             myChart = new Chart(ctx, {
                 type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: datasets
-                },
+                data: { labels, datasets },
                 options: {
                     scales: {
                         yAxes: [{
@@ -208,7 +199,6 @@
             myChart.config.type = 'bar';
             myChart.update();
         }
-
     </script>
 </body>
 </html>
